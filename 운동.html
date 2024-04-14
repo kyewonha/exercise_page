@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Exercise Records</title>
+</head>
+<body>
+    <h1>Morning Exercise Records</h1>
+
+    <form id="exerciseForm">
+        <label for="studentList">Select Student:</label>
+        <select id="studentList" name="students" size="5">
+            <option value="John">John</option>
+            <option value="Emily">Emily</option>
+            <option value="Michael">Michael</option>
+            <option value="Sarah">Sarah</option>
+            <option value="David">David</option>
+            <!-- Add more students here -->
+        </select>
+        <br><br>
+        
+        <label for="sport">Choose Sport:</label><br>
+        <input type="radio" id="jumpingRope" name="sport" value="Jumping Rope">
+        <label for="jumpingRope">Jumping Rope</label><br>
+        
+        <input type="radio" id="soccer" name="sport" value="Soccer">
+        <label for="soccer">Soccer</label><br>
+        
+        <input type="radio" id="running" name="sport" value="Running">
+        <label for="running">Running</label><br>
+        <br>
+        
+        <button type="button" onclick="saveRecord()">Save Record</button>
+    </form>
+
+    <script>
+        function saveRecord() {
+            const student = document.getElementById("studentList").value;
+            const sport = document.querySelector('input[name="sport"]:checked').value;
+            const currentDate = new Date().toLocaleDateString();
+            const currentTime = new Date().toLocaleTimeString();
+            const record = `${currentDate}, ${currentTime}, ${student}, ${sport}`;
+            console.log(record); // You can replace this with code to save to Google Sheets or Excel
+        }
+    </script>
+</body>
+</html>
