@@ -65,20 +65,23 @@
             });
         }
 
-        function appendDataToSheet(data) {
-            gapi.client.sheets.spreadsheets.values.append({
-                spreadsheetId: '16I2wcRxaHpGHUsYeTBUh_Kq8uxr84D3bFn5wYhn3BW0', // Your Google Sheets spreadsheet ID
-                range: '시트1', // Name of the sheet and range where you want to append data
-                valueInputOption: 'USER_ENTERED',
-                resource: {
-                    values: [data.split(",")] // Splitting the data and converting it to a 2D array
-                }
-            }).then(function(response) {
-                console.log("Data appended successfully:", response.result);
-            }, function(error) {
-                console.error("Error appending data:", error.result.error.message);
-            });
+function appendDataToSheet(data) {
+    gapi.client.sheets.spreadsheets.values.append({
+        spreadsheetId: '16I2wcRxaHpGHUsYeTBUh_Kq8uxr84D3bFn5wYhn3BW0', 
+        range: '시트1',
+        valueInputOption: 'USER_ENTERED',
+        resource: {
+            values: [data.split(",")] // Splitting the data and converting it to a 2D array
         }
+    }).then(function(response) {
+        alert("Data appended successfully!"); // 메시지 박스 대신 alert 함수 사용
+        console.log("Data appended successfully:", response.result);
+    }, function(error) {
+        alert("Error appending data: " + error.result.error.message); // 메시지 박스 대신 alert 함수 사용
+        console.error("Error appending data:", error.result.error.message);
+    });
+}
+
 
         gapi.load('client', init);
     </script>
