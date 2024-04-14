@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,10 @@
 <body>
     <h1>Morning Exercise Records</h1>
 
+    <!-- Include the Google API client library -->
+    <script src="https://apis.google.com/js/api.js"></script>
+
+    <!-- Your form and other HTML content -->
     <form id="exerciseForm">
         <label for="studentList">Select Student:</label>
         <select id="studentList" name="students" size="5">
@@ -34,6 +38,7 @@
         <button type="button" onclick="saveRecord()">Save Record</button>
     </form>
 
+    <!-- Your JavaScript code -->
     <script>
         function saveRecord() {
             const student = document.getElementById("studentList").value;
@@ -41,8 +46,41 @@
             const currentDate = new Date().toLocaleDateString();
             const currentTime = new Date().toLocaleTimeString();
             const record = `${currentDate}, ${currentTime}, ${student}, ${sport}`;
-            console.log(record); // You can replace this with code to save to Google Sheets or Excel
+
+            // Call the function to append data to Google Sheets
+            appendDataToSheet(record);
         }
+
+        // Initialize Google API client with OAuth client ID
+        function init() {
+            gapi.client.init({
+                clientId: '156395319768-1591hkln1emm03dqi9g0ia0vs70gjr16.apps.googleusercontent.com', // Your OAuth client ID
+                discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+                scope: 'https://www.googleapis.com/auth/spreadsheets'
+            }).then(function() {
+                console.log("Google API client initialized");
+                // Additional initialization or API usage code here
+            }).catch(function(error) {
+                console.error("Error initializing Google API client:", error);
+            });
+        }
+
+        function appendDataToSheet(data) {
+            gapi.client.sheets.spreadsheets.values.append({
+                spreadsheetId: '16I2wcRxaHpGHUsYeTBUh_Kq8uxr84D3bFn5wYhn3BW0', // Your Google Sheets spreadsheet ID
+                range: '시트1', // Name of the sheet and range where you want to append data
+                valueInputOption: 'USER_ENTERED',
+                resource: {
+                    values: [data.split(",")] // Splitting the data and converting it to a 2D array
+                }
+            }).then(function(response) {
+                console.log("Data appended successfully:", response.result);
+            }, function(error) {
+                console.error("Error appending data:", error.result.error.message);
+            });
+        }
+
+        gapi.load('client', init);
     </script>
 </body>
 </html>
